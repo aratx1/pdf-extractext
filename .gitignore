@@ -60,6 +60,9 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+/staticfiles/
+/media/
+/uploads/
 
 # Flask stuff:
 instance/
@@ -136,6 +139,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.local
+.env.*.local
 .envrc
 .venv
 env/
@@ -209,4 +214,22 @@ __marimo__/
 #Extensiones (sugerencias del profesor)
 .vscode/
 *.code-workspace
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+# Directorio de PDFs subidos por usuarios
+uploads/
+# Directorio de archivos estáticos compilados
+staticfiles/
+# Archivos temporales
+*.tmp
 
