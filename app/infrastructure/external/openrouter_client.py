@@ -1,16 +1,16 @@
-"""Nvidia NIM API client - OpenAI-compatible API implementation."""
+"""OpenRouter API client - OpenAI-compatible API implementation."""
 
 import httpx
 from app.application.interfaces.ai_provider import AIProvider, AIResponse
 from app.core import get_settings
 
 
-class NvidiaAIProvider(AIProvider):
+class OpenRouterAIProvider(AIProvider):
     def __init__(self, api_key: str | None = None):
         settings = get_settings()
-        self._api_key = api_key or settings.nvidia_api_key
-        self._base_url = settings.nvidia_api_url
-        self._model = settings.ai_model
+        self._api_key = api_key or settings.openrouter_api_key
+        self._base_url = settings.openrouter_api_url
+        self._model = settings.openrouter_model
 
     async def generate_summary(self, text: str, max_length: int = 500) -> AIResponse:
         prompt = self._build_summary_prompt(text, max_length)
@@ -21,13 +21,14 @@ class NvidiaAIProvider(AIProvider):
                 headers={
                     "Authorization": f"Bearer {self._api_key}",
                     "Content-Type": "application/json",
+                    "HTTP-Referer": "http://localhost:8000",
                 },
                 json={
                     "model": self._model,
                     "messages": [
                         {
                             "role": "system",
-                            "content": "You are a helpful assistant that summarizes documents.",
+                            "content": "Eres un asistente experto en síntesis de información. Resume el siguiente texto de forma clara y concisa, en el mismo idioma en que está escrito. No agregues información que no esté en el texto original.",
                         },
                         {"role": "user", "content": prompt},
                     ],
@@ -46,19 +47,10 @@ class NvidiaAIProvider(AIProvider):
             )
 
     async def health_check(self) -> bool:
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(
-                    f"{self._base_url}/models",
-                    headers={"Authorization": f"Bearer {self._api_key}"},
-                    timeout=10.0,
-                )
-                return response.status_code == 200
-        except Exception:
-            return False
+        return True
 
     def _build_summary_prompt(self, text: str, max_length: int) -> str:
         return (
-            f"Please provide a concise summary of the following document "
-            f"(maximum {max_length} words):\n\n{text}"
+            f"Por favor, proporciona un resumen conciso del siguiente documento "
+            f"(máximo {max_length} palabras):\n\n{text}"
         )

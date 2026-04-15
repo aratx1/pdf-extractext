@@ -6,7 +6,7 @@
 |---|---|
 |`Presentation` | routers/pdf_summary.py, schemas/pdf_summary.py, templates/index.html
 |`Application` | services/pdf_service.py, services/summary_service.py, interfaces/ai_provider.py
-|`Infrastructure`	| external/nvidia_client.py, repositories/in_memory_repository.py, file_storage/file_handler.py
+|`Infrastructure`	| external/openrouter_client.py, repositories/in_memory_repository.py, file_storage/file_handler.py
 |`Core` | core/__init__.py (Settings)
 
 ## Estructura de las carpetas
@@ -53,7 +53,7 @@
 
 | Componente | Propósito |
 |---|---|
-| `external/` | Cliente HTTP para Nvidia NIM API. |
+| `external/` | Cliente HTTP para OpenRouter API. |
 | `repositories/` | Persistencia de resúmenes (in-memory, listo para SQL/NoSQL). |
 | `file_storage/` | Manejo de archivos subidos (guardar, leer, eliminar). |
 

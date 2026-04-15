@@ -8,7 +8,7 @@ from pathlib import Path
 from app.core import get_settings
 from app.application.services.pdf_service import PDFService
 from app.application.services.summary_service import SummaryService
-from app.infrastructure.external.nvidia_client import NvidiaAIProvider
+from app.infrastructure.external.openrouter_client import OpenRouterAIProvider
 from app.infrastructure.repositories.in_memory_repository import (
     InMemorySummaryRepository,
 )
@@ -28,7 +28,7 @@ def create_summary_service() -> SummaryService:
     global _summary_service
     _summary_service = SummaryService(
         pdf_service=PDFService(),
-        ai_provider=NvidiaAIProvider(),
+        ai_provider=OpenRouterAIProvider(),
         repository=InMemorySummaryRepository(),
     )
     return _summary_service
