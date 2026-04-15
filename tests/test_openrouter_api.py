@@ -50,7 +50,7 @@ def test_simple_completion():
         "HTTP-Referer": "http://localhost:8000",
     }
     data = {
-        "model": settings.openrouter_model,
+        "model": "openrouter/free",
         "messages": [{"role": "user", "content": "Di 'hola' en una palabra"}],
         "max_tokens": 50,
     }
@@ -59,8 +59,10 @@ def test_simple_completion():
 
     if response.status_code == 200:
         result = response.json()
+        actual_model = result.get("model", "desconocido")
         content = result["choices"][0]["message"]["content"]
         print(f"✓ Respuesta del modelo: {content}")
+        print(f"  Modelo seleccionado por router: {actual_model}")
     else:
         print(f"✗ Error {response.status_code}: {response.text}")
         return False
@@ -83,7 +85,7 @@ def test_summary_request():
         "HTTP-Referer": "http://localhost:8000",
     }
     data = {
-        "model": settings.openrouter_model,
+        "model": "openrouter/free",
         "messages": [
             {
                 "role": "system",
@@ -103,9 +105,11 @@ def test_summary_request():
 
     if response.status_code == 200:
         result = response.json()
+        actual_model = result.get("model", "desconocido")
         summary = result["choices"][0]["message"]["content"]
         usage = result.get("usage", {})
         print(f"✓ Resumen generado: {summary}")
+        print(f"  Modelo seleccionado por router: {actual_model}")
         print(f"  Tokens usados: {usage.get('total_tokens', 'N/A')}")
         return True
     else:

@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ai_model: str = "meta/llama-3.2-90b-vision-instruct"
     openrouter_api_key: str = ""
     openrouter_api_url: str = "https://openrouter.ai/api/v1"
-    openrouter_model: str = "deepseek/deepseek-chat-v3-0324:free"
+    openrouter_model: str = "openrouter/free"
 
     class Config:
         env_file = ".env"
