@@ -14,18 +14,13 @@
 **Características**:
 - Sticky positioning (se queda al hacer scroll)
 - Gradient text en el título
-- Subtitle descriptivo
 - Backdrop blur para efecto moderno
 - Responsive: mayor en desktop, compacto en mobile
 
 **Clases Tailwind**:
-```html
-<header class="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 
-                bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
-  <h1 class="text-2xl sm:text-3xl font-bold text-gradient">PDF Summarizer</h1>
-  <p class="text-sm text-slate-600 dark:text-slate-400">Extract and summarize your PDFs with AI</p>
-</header>
-```
+- `sticky top-0 z-40` - Posicionamiento
+- `bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm` - Efecto vidrio
+- `text-2xl sm:text-3xl` - Responsive typography
 
 ---
 
@@ -47,16 +42,15 @@
 
 **Estados**:
 - **Normal**: Border dashed gris, icono gris
-- **Hover**: Border azul, icono azul (indica interactividad)
+- **Hover**: Border azul, icono azul
 - **File Selected**: Muestra nombre del archivo
-- **Disabled**: Botón con opacidad 50%, no interactivo
+- **Disabled**: Botón con opacidad 50%
 
 **Clases Tailwind**:
-```html
-<div class="rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 
-            hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
-  <!-- Upload content -->
-</div>
+```
+border-2 border-dashed border-slate-300 dark:border-slate-700
+hover:border-blue-400 dark:hover:border-blue-500
+transition-colors duration-200
 ```
 
 ---
@@ -65,7 +59,7 @@
 
 ```
 ┌────────────────────────────────────────────────┐
-│ Summary    [Verde claro en light, oscuro en dark]
+│ Summary    [Verde claro]
 ├────────────────────────────────────────────────┤
 │                                                │
 │ El resumen del PDF aparece aquí...             │
@@ -76,24 +70,17 @@
 ```
 
 **Características**:
-- Aparece con animación fade-in + slide-in
-- Header con fondo degradado y nombre del archivo
+- Aparece con animación fade-in + slide-in (300ms)
+- Header con fondo degradado
 - Body con padding generoso
 - Preserva espacios y líneas del texto
 - Dark mode completamente soportado
 
-**Animación CSS**:
-```css
-@keyframes slideInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+**Clases Tailwind**:
+```
+animate-in fade-in slide-in-from-bottom-4
+duration-300
+bg-white dark:bg-slate-900 rounded-xl shadow-md
 ```
 
 ---
@@ -102,327 +89,150 @@
 
 ```
 ┌────────────────────────────────────────────────┐
-│ ❌ Failed to generate summary                  │
+│ ⚠️  Error Message Here                          │
 └────────────────────────────────────────────────┘
 ```
 
 **Características**:
-- Borde rojo izquierdo (border-l-4)
-- Fondo rojo suave (light) o tenue (dark)
-- Icono SVG rojo para claridad
-- Mensaje de error cercano al icono
-- Aparece con animación slide-in desde arriba
+- Borde izquierdo rojo para indicar error
+- Icono SVG a la izquierda
+- Mensaje descriptivo en rojo
+- Desaparece al hacer nuevo resumen
 
-**Color Scheme**:
-- Light: `bg-red-50` con `text-red-800`
-- Dark: `bg-red-950/20` con `text-red-200`
+**Clases Tailwind**:
+```
+bg-red-50 dark:bg-red-950/20
+border-l-4 border-red-500 dark:border-red-400
+text-red-800 dark:text-red-200
+```
 
 ---
 
-### 5. History List (Lista de Historial)
+### 5. History List (Historial de Resúmenes)
 
 ```
-┌────────────────────────────────────┐
-│ Recientes Resúmenes               │
-├────────────────────────────────────┤
-│ 📄 documento-01.pdf          →     │
-│    Hace 2 horas                    │
-├────────────────────────────────────┤
-│ 📄 manual-usuario.pdf        →     │
-│    Hace 5 horas                    │
-├────────────────────────────────────┤
-│ 📄 reporte-mensual.pdf       →     │
-│    Hace 1 día                      │
-└────────────────────────────────────┘
+┌────────────────────────────────────────────────┐
+│ Recent Summaries                               │
+│                                                │
+│ ┌──────────────────────────────────────────┐   │
+│ │ 📄 document1.pdf              →          │   │
+│ │ Apr 16, 2026, 3:45 PM                    │   │
+│ └──────────────────────────────────────────┘   │
+│ ┌──────────────────────────────────────────┐   │
+│ │ 📄 document2.pdf              →          │   │
+│ │ Apr 16, 2026, 2:20 PM                    │   │
+│ └──────────────────────────────────────────┘   │
+└────────────────────────────────────────────────┘
 ```
 
 **Características**:
-- Cada item es una tarjeta clickeable
-- Hover: cambio de color del border, sombra aumentada
-- Icono de flecha (chevron) indicador de acción
-- Nombre del archivo + fecha/hora
-- Smooth transitions
+- Items clickeables para ver resumen
+- Nombre del archivo y fecha
+- Icono de flecha indicando interactividad
+- Hover effect (border y shadow)
+- Responsive en mobile
 
-**Estados de Hover**:
-```css
-.history-item:hover {
-  border-color: rgb(147, 197, 253); /* blue-300 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 200ms ease-out;
-}
+**Clases Tailwind**:
+```
+hover:border-blue-300 dark:hover:border-blue-700
+hover:shadow-md dark:hover:shadow-lg
+transition-all duration-200
+cursor-pointer
 ```
 
 ---
 
-## Paleta de Colores
+### 6. Footer
 
-### Light Mode
+```
+┌─────────────────────────────────────────────────┐
+│  © 2026 PDF Summarizer. All rights reserved.    │
+└─────────────────────────────────────────────────┘
+```
 
-| Elemento | Color | Uso |
-|----------|-------|-----|
-| Primario | Blue 600-700 | Headers, links, primary CTA |
-| Éxito | Emerald 600-700 | Success button, confirmación |
-| Error | Red 600-700 | Alertas de error |
-| Background | Slate 50-100 | Fondo de página (gradiente) |
-| Text | Slate 900-700 | Texto principal |
-| Subtle | Slate 400-600 | Texto secundario |
-
-### Dark Mode
-
-| Elemento | Color | Uso |
-|----------|-------|-----|
-| Primario | Blue 400-500 | Headers, links, primary CTA |
-| Éxito | Emerald 400-500 | Success button, confirmación |
-| Error | Red 400 | Alertas de error |
-| Background | Slate 950-900 | Fondo de página (gradiente) |
-| Text | Slate 100 | Texto principal |
-| Subtle | Slate 300-400 | Texto secundario |
+**Características**:
+- Sticky al bottom
+- Backdrop blur como header
+- Texto centrado y pequeño
+- Respeta dark mode
 
 ---
 
-## Tipografía
+## 🎨 Paleta de Colores
 
-### Escala de Tipos
-
-| Clase | Tamaño | Peso | Uso |
-|-------|--------|------|-----|
-| `text-2xl/3xl` | 24-30px | Bold | Títulos principales (h1) |
-| `text-xl/2xl` | 20-24px | Semibold | Subtítulos (h2) |
-| `text-base` | 16px | Regular | Texto principal |
-| `text-sm` | 14px | Regular | Texto secundario |
-| `text-xs` | 12px | Regular | Metadata |
-
-### Responsive Typography
-
-- **Mobile**: `text-sm` (14px)
-- **Tablet+**: `sm:text-base` (16px)
-- **Desktop**: `md:text-lg` (18px)
+| Uso | Light | Dark |
+|-----|-------|------|
+| **Primario** | `blue-600` | `blue-400` |
+| **Éxito** | `emerald-600` | `emerald-400` |
+| **Error** | `red-600` | `red-400` |
+| **Background** | `slate-50` | `slate-950` |
+| **Texto** | `slate-900` | `slate-100` |
 
 ---
 
-## Espaciado (8dp System)
+## 📐 Espaciado (8px System)
 
-### Padding/Margin
+| Token | Píxeles | Uso |
+|-------|---------|-----|
+| `p-4` | 16px | Padding interior |
+| `p-6` | 24px | Padding mayor |
+| `p-8` | 32px | Padding secciones |
+| `gap-4` | 16px | Espaciado entre elementos |
+| `my-12` | 48px | Margin entre secciones |
 
-| Clase | Valor | Uso |
-|-------|-------|-----|
-| `p-4` | 16px | Padding estándar |
-| `p-6` | 24px | Padding generoso |
-| `p-8` | 32px | Padding extra |
-| `gap-4` | 16px | Espacio entre items |
-| `mb-12` | 48px | Margen de sección |
+---
 
-### Responsive Spacing
+## 📱 Responsive Breakpoints
+
+| Breakpoint | Ancho | Uso |
+|-----------|-------|-----|
+| `sm:` | 640px | Tablets pequeñas |
+| `md:` | 768px | Tablets |
+| `lg:` | 1024px | Desktops |
+
+Ejemplo:
+```
+text-sm sm:text-base md:text-lg  // Aumenta tamaño en pantallas más grandes
+w-full sm:w-auto                 // Full width en mobile, auto en sm+
+```
+
+---
+
+## ✨ Animaciones
+
+| Tipo | Duración | Uso |
+|------|----------|-----|
+| Fade-in | 300ms | Mostrar resultados |
+| Slide | 300ms | Entrada desde abajo |
+| Hover | 200ms | Estados interactivos |
+| Transición color | 300ms | Cambio de dark mode |
+
+---
+
+## ♿ Accesibilidad
+
+✅ Implementado:
+- Contraste mínimo 4.5:1 en todos los textos
+- `aria-label` en secciones principales
+- Iconos SVG (no emoji)
+- Focus states visibles en todos los botones
+- Navegación por teclado completa
+- Tamaños de toque ≥ 44×44px
+
+---
+
+## 🌙 Dark Mode
+
+Todos los componentes soportan dark mode automático usando el prefix `dark:`:
 
 ```html
-<!-- Padding: 16px mobile, 24px tablet+, 32px desktop+ -->
-<div class="px-4 sm:px-6 lg:px-8">Content</div>
-
-<!-- Margen: 24px mobile, 48px tablet+ -->
-<section class="mb-6 sm:mb-12">Section</section>
-```
-
----
-
-## Interacciones & Animaciones
-
-### Button States
-
-**Default**:
-```css
-background: gradient-blue
-```
-
-**Hover**:
-```css
-background: darker-gradient-blue
-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1)
-transform: translateY(-2px)
-```
-
-**Active (Click)**:
-```css
-transform: translateY(0)
-```
-
-**Disabled**:
-```css
-opacity: 0.5
-cursor: not-allowed
-```
-
-### Card Hover
-
-**Default**:
-```css
-border-color: slate-200 (light) / slate-800 (dark)
-box-shadow: none
-```
-
-**Hover**:
-```css
-border-color: blue-300 (light) / blue-700 (dark)
-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1)
-transition: all 200ms ease-out
-```
-
----
-
-## Responsive Behavior
-
-### Mobile (< 640px)
-
-```
-┌─────────────────────┐
-│  📄 PDF Summarizer  │
-│  Extract and...     │
-└─────────────────────┘
-│                     │
-│  [ Upload Area ]    │
-│                     │
-│  [ Result Card ]    │
-│                     │
-│  [ History Items ]  │
-│                     │
-└─────────────────────┘
-```
-
-- Single column
-- Smaller text (text-sm)
-- Full-width buttons
-- Compact padding (px-4)
-
-### Tablet (640px - 1024px)
-
-```
-┌────────────────────────────────────┐
-│  📄 PDF Summarizer                 │
-│  Extract and summarize your PDFs   │
-└────────────────────────────────────┘
-│                                    │
-│       [ Upload Area ]              │
-│                                    │
-│       [ Result Card ]              │
-│                                    │
-│    [ History List Grid ]           │
-│    [Item 1] [Item 2]               │
-│                                    │
-└────────────────────────────────────┘
-```
-
-- Larger text (text-base)
-- Increased padding (px-6)
-- Better spacing
-
-### Desktop (1024px+)
-
-```
-┌──────────────────────────────────────────┐
-│  📄 PDF Summarizer                       │
-│  Extract and summarize your PDFs with AI │
-└──────────────────────────────────────────┘
-│                                          │
-│      [ Upload Area - Centered ]          │
-│                                          │
-│      [ Result Card - Max Width ]         │
-│                                          │
-│    [ History Items in Grid ]             │
-│    [Item 1] [Item 2] [Item 3]            │
-│                                          │
-└──────────────────────────────────────────┘
-```
-
-- Optimal text size (text-lg)
-- Max-width container (max-w-4xl)
-- Generous padding (px-8)
-- Horizontal grid for history items
-
----
-
-## Dark Mode
-
-El dark mode se activa automáticamente basado en las preferencias del sistema.
-
-### Transición Automática
-
-```css
-body {
-  transition: colors 300ms;
-  /* Cambio suave entre temas */
-}
-```
-
-### Ejemplo de Componente
-
-```html
-<!-- Light mode: white background with dark text -->
-<!-- Dark mode: slate-900 background with light text -->
-<div class="bg-white dark:bg-slate-900 
-            text-slate-900 dark:text-slate-100">
-  Content that adapts to theme
+<div class="bg-white dark:bg-slate-900">
+  <!-- Blanco en light mode, slate-900 en dark mode -->
 </div>
 ```
 
----
-
-## Accesibilidad
-
-### Características Incluidas
-
-✅ **Contraste (WCAG AA)**
-- Normal text: 4.5:1 ratio
-- Large text: 3:1 ratio
-- Validado en light y dark mode
-
-✅ **Navegación por Teclado**
-- Tab order correcto
-- Enter/Space para botones
-- Focus rings visibles
-
-✅ **Iconografía**
-- SVG icons (no emoji)
-- Tamaños consistentes
-- Contraste suficiente
-
-✅ **Touch Targets**
-- Mínimo 44×44px
-- Espacio entre elementos (8px+)
-- No requiere precisión exacta
-
-✅ **Semantic HTML**
-- Headings jerarquía correcta (h1 → h2)
-- Form labels asociadas
-- ARIA labels donde es necesario
+El sistema detecta las preferencias del navegador automáticamente.
 
 ---
 
-## Verificación Visual
-
-Para verificar que todo está correctamente implementado:
-
-```html
-<!-- Verifica que los gradientes se renderizan -->
-<div class="bg-gradient-to-r from-blue-600 to-blue-700">
-  Gradient rendered
-</div>
-
-<!-- Verifica que dark mode funciona -->
-<div class="dark:bg-slate-900">
-  Toggle system dark mode
-</div>
-
-<!-- Verifica animaciones -->
-<div class="animate-in fade-in slide-in-from-bottom-4">
-  Animation visible on page load
-</div>
-
-<!-- Verifica responsividad -->
-<div class="text-sm sm:text-base md:text-lg">
-  Resize browser - text changes at breakpoints
-</div>
-```
-
----
-
-**Última Actualización**: Abril 16, 2026
-**Versión**: 1.0
+**Última actualización**: Abril 18, 2026
