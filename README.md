@@ -81,24 +81,6 @@ pdf-extractext/
 └── pyproject.toml               # Dependencias Python
 ```
 
-## Desarrollo
-
-### Tailwind CSS
-
-Para compilar los estilos CSS durante el desarrollo:
-
-```bash
-npm run watch:css
-```
-
-Esto generará automáticamente `static/css/output.css` cada vez que haya cambios en los templates HTML.
-
-Para hacer una compilación única:
-
-```bash
-npm run build:css
-```
-
 ## Notas
 
 - Los archivos CSS compilados se generan en `static/css/output.css`
@@ -113,10 +95,10 @@ La aplicación utiliza **Tailwind CSS** para un diseño minimalista refinado con
 - **Accesible**: WCAG 2.1 AA (contraste 4.5:1+, navegación por teclado)
 - **Animaciones**: Transiciones suaves de 150-300ms
 
-Para más información, consulta la [documentación de diseño](docs/README.md).
+Para más información, consulta la [documentación de componentes](docs/COMPONENT_REFERENCE.md).
 
 ## 📚 Documentación
 
-- [`docs/README.md`](docs/README.md) - Guía de navegación
-- [`docs/COMPONENT_REFERENCE.md`](docs/COMPONENT_REFERENCE.md) - Referencia visual de componentes
+- [`docs/estructura.md`](docs/estructura.md) - Navegación y estructura del funcionamiento
+- [`docs/diseño-frontend.md`](docs/diseño-frontend.md) - Guía para configurar el frontend
 

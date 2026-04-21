@@ -1,28 +1,5 @@
 # 📚 Documentación - PDF Summarizer
 
-## 🚀 Setup Rápido
-
-1. Instala dependencias:
-   ```bash
-   uv sync          # Python
-   npm install      # Node.js (Tailwind CSS)
-   ```
-
-2. Compila CSS:
-   ```bash
-   npm run watch:css  # Development (watch mode)
-   npm run build:css  # Production
-   ```
-
-3. Inicia el servidor:
-   ```bash
-   python -m uvicorn app.main:app --reload
-   ```
-
-Accede a http://localhost:8000
-
----
-
 ## 📖 Documentación Disponible
 
 ### [COMPONENT_REFERENCE.md](COMPONENT_REFERENCE.md)
