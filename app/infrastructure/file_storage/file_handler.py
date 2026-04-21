@@ -7,8 +7,7 @@ from app.core import get_settings
 
 class FileHandler:
     def __init__(self, upload_dir: Path | None = None):
-        settings = get_settings()
-        self._upload_dir = upload_dir or settings.upload_dir
+        self._upload_dir = upload_dir or get_settings().upload_dir
         self._upload_dir.mkdir(parents=True, exist_ok=True)
 
     async def save(self, content: bytes, filename: str) -> Path:

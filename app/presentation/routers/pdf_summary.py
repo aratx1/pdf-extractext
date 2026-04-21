@@ -23,14 +23,18 @@ async def summarize_pdf(
     file: UploadFile = File(...),
     service: SummaryService = Depends(get_summary_service),
 ):
-    if not file.filename.endswith(".pdf"):
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
 
     content = await file.read()
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Empty file uploaded")
 
-    summary = await service.create_summary(content, file.filename)
+    try:
+        summary = await service.create_summary(content, file.filename)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
     return SummaryResponse(
         id=summary.id,
         original_filename=summary.original_filename,
