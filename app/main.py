@@ -3,6 +3,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
 from app.core import get_settings
@@ -47,6 +48,10 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+# Mount static files directory
+static_dir = Path(__file__).parent.parent / "static"
+app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
 
 app.include_router(pdf_router)
 
