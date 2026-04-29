@@ -5,8 +5,7 @@ Extraer texto de un pdf que es proporcionado por el usuario. Después se hace un
 ## Tecnologias:
 - Python
 - UV
-- Modelo de IA (a definir)
-- Ollama (opcional, a definir a futuro)
+- DeepSeek
 - xD
 - Base de datos no relacional MongoDB
 
