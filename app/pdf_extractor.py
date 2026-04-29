@@ -1,21 +1,3 @@
-"""
-app/pdf_extractor.py
---------------------
-Script básico para leer un archivo PDF y devolver su texto.
-
-## Investigación de librerías (Issue #6)
-
-| Librería   | Pros                                          | Contras                                      | Veredicto     |
-|------------|-----------------------------------------------|----------------------------------------------|---------------|
-| PyPDF2     | Muy conocida, mucha documentación             | DEPRECADA, reemplazada por pypdf             | ❌ No usar    |
-| pymupdf    | Muy rápida, extrae texto con mucha precisión  | Requiere binarios del sistema, más compleja  | ⚠️  Opcional  |
-| pdfplumber | Simple, excelente extracción de texto/tablas  | Más lenta que pymupdf en PDFs grandes        | ✅ ELEGIDA    |
-
-Decisión: pdfplumber es la mejor opción para empezar. Es simple, bien mantenida
-y produce resultados de calidad. pymupdf puede considerarse si se necesita
-mayor performance en el futuro.
-"""
-
 import os
 import pdfplumber
 
