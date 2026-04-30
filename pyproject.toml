@@ -8,7 +8,9 @@ dependencies = [
     "aiofiles>=24.1.0",
     "fastapi>=0.115.0",
     "httpx>=0.28.0",
+    "motor>=3.4.0",
     "pydantic-settings>=2.8.0",
+    "pymongo>=4.11.0",
     "pypdf>=5.4.0",
     "python-multipart>=0.0.20",
 ]
@@ -17,4 +19,11 @@ dependencies = [
 dev = [
     "pytest>=8.3.0",
     "pytest-asyncio>=0.24.0",
+    "testcontainers[mongodb]>=4.9.0",
+    "motor>=3.4.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["app/tests"]
+asyncio_mode = "auto"
+pythonpath = ["."]
