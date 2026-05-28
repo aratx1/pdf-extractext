@@ -9,10 +9,8 @@ from pathlib import Path
 from app.core import get_settings
 from app.application.services.pdf_service import PDFService
 from app.application.services.summary_service import SummaryService
-from app.infrastructure.external.openrouter_client import OpenRouterAIProvider
-from app.infrastructure.repositories.in_memory_repository import (
-    InMemorySummaryRepository,
-)
+from app.infrastructure.external.ollama_client import OllamaAIProvider
+from app.infrastructure.repositories.mongo_repository import MongoSummaryRepository
 from app.presentation.routers.pdf_summary import router as pdf_router
 
 
@@ -29,8 +27,8 @@ def create_summary_service() -> SummaryService:
     global _summary_service
     _summary_service = SummaryService(
         pdf_service=PDFService(),
-        ai_provider=OpenRouterAIProvider(),
-        repository=InMemorySummaryRepository(),
+        ai_provider=OllamaAIProvider(),
+        repository=MongoSummaryRepository(),
     )
     return _summary_service
 

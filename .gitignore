@@ -220,3 +220,6 @@ yarn-error.log*
 # Skills
 .opencode/
 .agents/
+
+# Docker
+mongo/data/
