@@ -1,8 +1,10 @@
 """PDF Summary API router with dependency injection."""
 
 from uuid import UUID
+import httpx
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from app.application.services.summary_service import SummaryService
+from app.infrastructure.external.openrouter_client import MissingAPIKeyError
 from app.presentation.schemas.pdf_summary import (
     SummaryResponse,
     SummaryListResponse,
@@ -24,13 +26,47 @@ async def summarize_pdf(
     service: SummaryService = Depends(get_summary_service),
 ):
     if not file.filename.endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+        raise HTTPException(status_code=400, detail="Solo podemos leer archivos PDF.")
 
     content = await file.read()
     if len(content) == 0:
-        raise HTTPException(status_code=400, detail="Empty file uploaded")
+        raise HTTPException(status_code=400, detail="Adjuntaste un archivo vacio.")
 
-    summary = await service.create_summary(content, file.filename)
+    try:
+        summary = await service.create_summary(content, file.filename)
+    except MissingAPIKeyError:
+        raise HTTPException(
+            status_code=502,
+            detail=(
+                "Se necesita generar una API key en el .env. "
+                "Crea una gratis en https://openrouter.ai/keys y agrégala como "
+                "OPENROUTER_API_KEY=... (y opcionalmente OPENROUTER_MODEL con un model ID válido)."
+            ),
+        )
+    except httpx.TimeoutException:
+        raise HTTPException(
+            status_code=504,
+            detail="El modelo de IA tardó demasiado en responder. Intenta con un PDF más corto.",
+        )
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code in (400, 401, 402):
+            raise HTTPException(
+                status_code=502,
+                detail=(
+                    "Se necesita generar una API key en el .env. "
+                    "Crea una gratis en https://openrouter.ai/keys y agrégala como "
+                    "OPENROUTER_API_KEY=... (y opcionalmente OPENROUTER_MODEL con un model ID válido)."
+                ),
+            )
+        raise HTTPException(
+            status_code=503,
+            detail=f"Error del proveedor de IA ({exc.response.status_code}): {exc}",
+        )
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"No se pudo contactar al proveedor de IA: {exc}",
+        )
     return SummaryResponse(
         id=summary.id,
         original_filename=summary.original_filename,

@@ -6,8 +6,7 @@ Extraer texto de un pdf que es proporcionado por el usuario. Después se hace un
 - Python
 - FastAPI
 - UV
-- Modelo de IA (a definir)
-- Ollama (opcional, a definir a futuro)
+- OpenRouter (proveedor de IA en la nube)
 - Tailwind CSS (para estilos)
 - Base de datos no relacional MongoDB
 

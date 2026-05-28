@@ -10,9 +10,6 @@ class Settings(BaseSettings):
     upload_dir: Path = Path("uploads")
     max_file_size_mb: int = 10
 
-    ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3.2"
-
     mongodb_url: str = "mongodb://localhost:27017"
     mongodb_db_name: str = "pdf_extractext"
 

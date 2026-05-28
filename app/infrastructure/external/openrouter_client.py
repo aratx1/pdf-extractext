@@ -5,6 +5,10 @@ from app.application.interfaces.ai_provider import AIProvider, AIResponse
 from app.core import get_settings
 
 
+class MissingAPIKeyError(RuntimeError):
+    pass
+
+
 class OpenRouterAIProvider(AIProvider):
     def __init__(self, api_key: str | None = None):
         settings = get_settings()
@@ -13,6 +17,10 @@ class OpenRouterAIProvider(AIProvider):
         self._model = settings.openrouter_model
 
     async def generate_summary(self, text: str, max_length: int = 500) -> AIResponse:
+        if not self._api_key.strip():
+            raise MissingAPIKeyError(
+                "OPENROUTER_API_KEY no está configurada en el archivo .env."
+            )
         prompt = self._build_summary_prompt(text, max_length)
 
         async with httpx.AsyncClient() as client:
