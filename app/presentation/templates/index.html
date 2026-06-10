@@ -6,86 +6,91 @@
     <title>PDF Summarizer</title>
     <link rel="stylesheet" href="/static/css/output.css">
 </head>
-<body class="bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
-    <div class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-400 dark:to-blue-500 bg-clip-text text-transparent">
-                            PDF Summarizer
-                        </h1>
-                        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">Extract and summarize your PDFs with AI</p>
-                    </div>
-                </div>
+<body class="bg-slate-950 text-white font-sans min-h-screen overflow-hidden">
+    <div class="fixed inset-0 bg-[url('/static/media/s2.png')] bg-cover bg-center bg-no-repeat">
+        <div class="absolute inset-0 bg-black/60"></div>
+    </div>
+
+    <div class="fixed top-[-15rem] left-[-10rem] w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-[-15rem] right-[-10rem] w-[600px] h-[600px] bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed top-[40%] right-[15%] w-[500px] h-[500px] bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-row gap-5 h-screen p-5">
+        <aside class="w-72 shrink-0 flex flex-col gap-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 p-6">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">📄</span>
+                <h1 class="text-2xl font-bold text-white">PDF Summarizer</h1>
             </div>
-        </header>
+            <p class="text-sm text-white/60">Extract and summarize your PDFs with AI</p>
 
-        <!-- Main Content -->
-        <main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <!-- Upload Section -->
-            <section class="mb-12" aria-label="Upload PDF File">
-                <div class="bg-white dark:bg-slate-900 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors duration-200 p-8 sm:p-12 text-center group" id="upload-area">
-                    <form id="upload-form" class="space-y-6">
-                        <div class="space-y-4">
-                            <svg class="mx-auto h-16 w-16 text-slate-400 dark:text-slate-600 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33A3 3 0 0116.5 19.5H6.75z" />
-                            </svg>
-                            <label class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 dark:from-blue-500 dark:to-blue-600 dark:hover:from-blue-600 dark:hover:to-blue-700 text-white font-semibold rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0" for="pdf-input">
-                                <input type="file" id="pdf-input" accept=".pdf" class="hidden">
-                                <span>Choose PDF File</span>
-                            </label>
-                        </div>
-                        <p id="file-name" class="text-sm text-slate-600 dark:text-slate-400 font-medium">No file selected</p>
-                        <button type="submit" id="submit-btn" disabled class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 dark:from-emerald-500 dark:to-emerald-600 dark:hover:from-emerald-600 dark:hover:to-emerald-700 text-white font-semibold rounded-lg transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:translate-y-0">
-                            Generate Summary
-                        </button>
-                    </form>
+            <div class="flex-1 flex flex-col items-center justify-center gap-4 border-2 border-dashed border-white/20 hover:border-white transition-colors duration-200 rounded-xl p-6 text-center group bg-white/5" id="upload-area">
+                <form id="upload-form" class="w-full space-y-4 flex flex-col items-center">
+                    <svg class="h-12 w-12 text-white/40 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33A3 3 0 0116.5 19.5H6.75z" />
+                    </svg>
+                    <label class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg cursor-pointer transition-all duration-200 hover:ring-2 hover:ring-white/50 active:translate-y-0" for="pdf-input">
+                        <input type="file" id="pdf-input" accept=".pdf" class="hidden">
+                        <span>Choose PDF File</span>
+                    </label>
+                    <p id="file-name" class="text-sm text-white/50 font-medium">No file selected</p>
+                    <button type="submit" id="submit-btn" disabled class="w-full px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-semibold rounded-lg transition-all duration-200 hover:ring-2 hover:ring-white/50 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:ring-0">
+                        Generate Summary
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 p-6 overflow-hidden relative">
+            <div class="flex items-start justify-between mb-4 shrink-0">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Resumen:</h2>
+                    <p id="result-title" class="text-sm text-white/50 mt-0.5"></p>
                 </div>
-            </section>
+                <button id="result-close" class="p-1.5 rounded-full hover:bg-white/20 transition-colors text-white/60 hover:text-white" aria-label="Close summary">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
 
-            <!-- Result Section -->
-            <section id="result-container" style="display: none;" aria-label="Summary Result" class="mb-12 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                <div class="bg-white dark:bg-slate-900 rounded-xl shadow-md dark:shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800">
-                    <div class="bg-gradient-to-r from-emerald-50 to-emerald-100/50 dark:from-emerald-950 dark:to-emerald-900/30 px-6 sm:px-8 py-4 border-b border-slate-200 dark:border-slate-800">
-                        <h3 id="result-title" class="text-lg sm:text-xl font-semibold text-slate-900 dark:text-slate-100">Summary</h3>
-                    </div>
-                    <div class="p-6 sm:p-8">
-                        <p id="result-content" class="text-base leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-wrap break-words"></p>
-                    </div>
+            <div class="flex-1 overflow-y-auto scrollbar-thin" id="result-scroll">
+                <div id="result-placeholder" class="flex items-center justify-center h-full text-white/30 text-sm">
+                    Upload a PDF and generate a summary to see results here
                 </div>
-            </section>
-
-            <!-- Error Section -->
-            <section id="error-container" style="display: none;" aria-label="Error Message" class="mb-12 animate-in fade-in slide-in-from-top-2 duration-300">
-                <div class="bg-red-50 dark:bg-red-950/20 border-l-4 border-red-500 dark:border-red-400 rounded-lg p-4 sm:p-6">
-                    <div class="flex items-start gap-4">
-                        <svg class="h-6 w-6 text-red-500 dark:text-red-400 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <div id="result-container" style="display: none;">
+                    <p id="result-content" class="text-base leading-relaxed text-white/80 whitespace-pre-wrap break-words"></p>
+                </div>
+                <div id="error-container" style="display: none;" class="bg-red-500/10 border-l-4 border-red-500 rounded-lg p-4">
+                    <div class="flex items-start gap-3">
+                        <svg class="h-5 w-5 text-red-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
                         </svg>
-                        <div class="flex-1">
-                            <p id="error-message" class="text-sm sm:text-base text-red-800 dark:text-red-200 font-medium"></p>
-                        </div>
+                        <p id="error-message" class="text-sm text-red-200 font-medium"></p>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- History Section -->
-            <section id="history-container" style="display: none;" aria-label="Recent Summaries" class="animate-in fade-in duration-300">
-                <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Recent Summaries</h2>
-                <div id="history-list" class="grid gap-3 sm:gap-4"></div>
-            </section>
+            <button id="download-btn" class="mt-4 self-start p-2 rounded-lg hover:bg-white/20 transition-colors text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed" disabled aria-label="Download summary">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+            </button>
         </main>
 
-        <!-- Footer -->
-        <footer class="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm py-6 mt-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-sm text-slate-600 dark:text-slate-400">
-                    PDF Summarizer • Powered by AI
-                </p>
-            </div>
-        </footer>
+        <div class="flex items-start shrink-0">
+            <button id="sidebar-toggle" aria-expanded="true" aria-label="Toggle document history" class="shrink-0 mt-6 p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition-all duration-200 z-10">
+                <svg class="h-4 w-4 transition-transform duration-300" id="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <aside id="history-sidebar" class="w-64 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 overflow-hidden transition-all duration-300 ease-in-out">
+                <div class="sidebar-content transition-opacity duration-200">
+                    <h3 class="text-xl font-bold text-white mb-4">Mis documentos</h3>
+                    <div id="history-list" class="flex flex-col gap-2">
+                    </div>
+                </div>
+            </aside>
+        </div>
     </div>
 
     <script>
@@ -95,10 +100,20 @@
         const uploadForm = document.getElementById('upload-form');
         const resultContainer = document.getElementById('result-container');
         const resultContent = document.getElementById('result-content');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        const resultTitle = document.getElementById('result-title');
+        const resultClose = document.getElementById('result-close');
+        const downloadBtn = document.getElementById('download-btn');
         const errorContainer = document.getElementById('error-container');
         const errorMessage = document.getElementById('error-message');
         const historyContainer = document.getElementById('history-container');
         const historyList = document.getElementById('history-list');
+
+        const sidebar = document.getElementById('history-sidebar');
+        const toggleBtn = document.getElementById('sidebar-toggle');
+        const toggleIcon = document.getElementById('toggle-icon');
+
+        let currentSummaryText = '';
 
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
@@ -132,35 +147,78 @@
                 }
 
                 const data = await response.json();
-                resultContent.textContent = data.summary_text;
+                currentSummaryText = data.summary_text;
+                resultContent.textContent = currentSummaryText;
+                resultTitle.textContent = data.original_filename;
+                resultPlaceholder.style.display = 'none';
                 resultContainer.style.display = 'block';
+                errorContainer.style.display = 'none';
+                downloadBtn.disabled = false;
                 loadHistory();
             } catch (err) {
                 errorMessage.textContent = err.message;
+                resultPlaceholder.style.display = 'none';
                 errorContainer.style.display = 'block';
+                resultContainer.style.display = 'none';
+                downloadBtn.disabled = true;
+                currentSummaryText = '';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Generate Summary';
             }
         });
 
+        resultClose.addEventListener('click', () => {
+            resultContainer.style.display = 'none';
+            errorContainer.style.display = 'none';
+            resultPlaceholder.style.display = 'flex';
+            downloadBtn.disabled = true;
+            currentSummaryText = '';
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (!currentSummaryText) return;
+            const blob = new Blob([currentSummaryText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'summary.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        function applyCollapseState(collapsed) {
+            if (collapsed) {
+                sidebar.classList.add('sidebar-collapsed');
+                toggleIcon.style.transform = 'rotate(0deg)';
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+                toggleIcon.style.transform = 'rotate(180deg)';
+            }
+            toggleBtn.setAttribute('aria-expanded', !collapsed);
+            localStorage.setItem('sidebar_collapsed', collapsed);
+        }
+
+        const savedCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+        applyCollapseState(savedCollapsed);
+
+        toggleBtn.addEventListener('click', () => {
+            const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+            applyCollapseState(!isCollapsed);
+        });
+
         async function loadHistory() {
             try {
                 const response = await fetch('/api/summaries');
                 const data = await response.json();
-                
+
                 if (data.summaries.length > 0) {
                     historyList.innerHTML = data.summaries.map(s => `
-                        <div class="bg-white dark:bg-slate-900 rounded-lg p-4 sm:p-5 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md dark:hover:shadow-lg transition-all duration-200 cursor-pointer group" onclick="showSummary('${s.id}')">
-                            <div class="flex items-start justify-between gap-4">
-                                <div class="flex-1 min-w-0">
-                                    <strong class="text-sm sm:text-base text-slate-900 dark:text-slate-100 block truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${s.original_filename}</strong>
-                                    <small class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 block mt-1">${new Date(s.created_at).toLocaleString()}</small>
-                                </div>
-                                <svg class="h-5 w-5 text-slate-400 dark:text-slate-600 flex-shrink-0 mt-0.5 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </div>
+                        <div class="flex items-center gap-3 p-3 rounded-full bg-white/10 border border-white/10 hover:border-white hover:shadow-white/10 transition-all duration-200 cursor-pointer group" onclick="showSummary('${s.id}')">
+                            <svg class="h-5 w-5 text-red-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                            </svg>
+                            <span class="text-sm text-white/80 group-hover:text-white truncate transition-colors">${s.original_filename}</span>
                         </div>
                     `).join('');
                     historyContainer.style.display = 'block';
@@ -174,13 +232,20 @@
             try {
                 const response = await fetch(`/api/summaries/${id}`);
                 const data = await response.json();
-                document.getElementById('result-title').textContent = data.original_filename;
-                resultContent.textContent = data.summary_text;
+                currentSummaryText = data.summary_text;
+                resultTitle.textContent = data.original_filename;
+                resultContent.textContent = currentSummaryText;
+                resultPlaceholder.style.display = 'none';
                 resultContainer.style.display = 'block';
+                errorContainer.style.display = 'none';
+                downloadBtn.disabled = false;
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (err) {
                 errorMessage.textContent = 'Failed to load summary';
+                resultPlaceholder.style.display = 'none';
                 errorContainer.style.display = 'block';
+                downloadBtn.disabled = true;
+                currentSummaryText = '';
             }
         }
 
