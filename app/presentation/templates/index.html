@@ -58,7 +58,7 @@
                     Upload a PDF and generate a summary to see results here
                 </div>
                 <div id="result-container" style="display: none;">
-                    <p id="result-content" class="text-base leading-relaxed text-white/80 whitespace-pre-wrap break-words"></p>
+                    <div id="result-content" class="prose-summary break-words"></div>
                 </div>
                 <div id="error-container" style="display: none;" class="bg-red-500/10 border-l-4 border-red-500 rounded-lg p-4">
                     <div class="flex items-start gap-3">
@@ -148,7 +148,7 @@
 
                 const data = await response.json();
                 currentSummaryText = data.summary_text;
-                resultContent.textContent = currentSummaryText;
+                resultContent.innerHTML = currentSummaryText;
                 resultTitle.textContent = data.original_filename;
                 resultPlaceholder.style.display = 'none';
                 resultContainer.style.display = 'block';
@@ -234,7 +234,7 @@
                 const data = await response.json();
                 currentSummaryText = data.summary_text;
                 resultTitle.textContent = data.original_filename;
-                resultContent.textContent = currentSummaryText;
+                resultContent.innerHTML = currentSummaryText;
                 resultPlaceholder.style.display = 'none';
                 resultContainer.style.display = 'block';
                 errorContainer.style.display = 'none';

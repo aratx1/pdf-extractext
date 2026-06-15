@@ -139,6 +139,147 @@
   }
 }
 
+/* ─── Prose Summary Styles ──────────────────────────────────────────────── */
+.prose-summary {
+  font-size: 0.9375rem;   /* 15px – comfortable reading size */
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.80);
+}
+
+/* Headings */
+.prose-summary h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.prose-summary h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-top: 1.75rem;
+  margin-bottom: 0.625rem;
+  background: linear-gradient(90deg, #818cf8, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.prose-summary h3 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #7dd3fc; /* sky-300 */
+}
+
+/* First heading shouldn't have extra top margin */
+.prose-summary > *:first-child {
+  margin-top: 0;
+}
+
+/* Paragraphs */
+.prose-summary p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.80);
+}
+
+.prose-summary p:last-child {
+  margin-bottom: 0;
+}
+
+/* Unordered lists */
+.prose-summary ul {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+  border-left: 2px solid rgba(129, 140, 248, 0.45); /* indigo accent */
+  padding-left: 1rem;
+}
+
+.prose-summary ul li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.45rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.prose-summary ul li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #a78bfa; /* violet-400 */
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+/* Ordered lists */
+.prose-summary ol {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(56, 189, 248, 0.35); /* sky accent */
+}
+
+.prose-summary ol li {
+  margin-bottom: 0.45rem;
+  color: rgba(255, 255, 255, 0.75);
+  padding-left: 0.25rem;
+}
+
+.prose-summary ol li::marker {
+  color: #38bdf8; /* sky-400 */
+  font-weight: 600;
+}
+
+/* Nested lists */
+.prose-summary ul ul,
+.prose-summary ol ol,
+.prose-summary ul ol,
+.prose-summary ol ul {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Bold & italic */
+.prose-summary strong {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.prose-summary em {
+  color: rgba(255, 255, 255, 0.70);
+  font-style: italic;
+}
+
+/* Inline code */
+.prose-summary code {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.25rem;
+  padding: 0.1em 0.4em;
+  font-size: 0.875em;
+  color: #fcd34d; /* amber-300 */
+  font-family: 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* Horizontal rule as section divider */
+.prose-summary hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  margin: 1.5rem 0;
+}
+
+/* ─── Sidebar ─────────────────────────────────────────────────────────────── */
 #history-sidebar {
   transition: width 0.3s ease-in-out, padding 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
