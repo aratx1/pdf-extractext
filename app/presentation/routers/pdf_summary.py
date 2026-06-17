@@ -1,10 +1,15 @@
 """PDF Summary API router with dependency injection."""
 
+import io
+import re
 from uuid import UUID
 import httpx
+from docx import Document
+from docx.shared import Pt, RGBColor
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
+from fastapi.responses import StreamingResponse
 from app.application.services.summary_service import SummaryService
-from app.infrastructure.external.openrouter_client import MissingAPIKeyError
+from app.infrastructure.external.openrouter_client import MissingAPIKeyError, OpenRouterError
 from app.presentation.schemas.pdf_summary import (
     SummaryResponse,
     SummaryListResponse,
@@ -42,6 +47,11 @@ async def summarize_pdf(
                 "Crea una gratis en https://openrouter.ai/keys y agrégala como "
                 "OPENROUTER_API_KEY=... (y opcionalmente OPENROUTER_MODEL con un model ID válido)."
             ),
+        )
+    except OpenRouterError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=str(exc),
         )
     except httpx.TimeoutException:
         raise HTTPException(
@@ -108,6 +118,78 @@ async def get_summary(
         original_filename=summary.original_filename,
         summary_text=summary.summary_text,
         created_at=summary.created_at,
+    )
+
+
+@router.get("/summaries/{summary_id}/export")
+async def export_summary_docx(
+    summary_id: UUID,
+    service: SummaryService = Depends(get_summary_service),
+):
+    """Export a summary as a .docx file using python-docx."""
+    summary = await service.get_summary(summary_id)
+    if not summary:
+        raise HTTPException(status_code=404, detail="Summary not found")
+
+    doc = Document()
+
+    # Title
+    title = doc.add_heading(level=1)
+    title_run = title.runs[0] if title.runs else title.add_run("")
+    title.clear()
+    title_run = title.add_run(f"Resumen: {summary.original_filename}")
+    title_run.font.color.rgb = RGBColor(0x1A, 0x56, 0xDB)  # blue
+
+    doc.add_paragraph()  # spacer
+
+    # Parse the markdown-like text into paragraphs
+    lines = summary.summary_text.splitlines()
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            doc.add_paragraph()
+            continue
+
+        # Heading detection: ## Heading or # Heading
+        h2_match = re.match(r'^#{1,2}\s+(.*)', stripped)
+        if h2_match:
+            heading_text = h2_match.group(1).strip()
+            h = doc.add_heading(level=2)
+            h.clear()
+            run = h.add_run(heading_text)
+            run.font.color.rgb = RGBColor(0x37, 0x51, 0x6F)
+            continue
+
+        # Bullet points: - item or * item
+        bullet_match = re.match(r'^[-*]\s+(.*)', stripped)
+        if bullet_match:
+            para = doc.add_paragraph(style='List Bullet')
+            para.add_run(bullet_match.group(1))
+            continue
+
+        # Bold text inline: **text**
+        para = doc.add_paragraph()
+        parts = re.split(r'(\*\*.*?\*\*)', stripped)
+        for part in parts:
+            bold_match = re.match(r'^\*\*(.*?)\*\*$', part)
+            if bold_match:
+                run = para.add_run(bold_match.group(1))
+                run.bold = True
+            else:
+                para.add_run(part)
+
+    # Save to buffer
+    buffer = io.BytesIO()
+    doc.save(buffer)
+    buffer.seek(0)
+
+    safe_name = re.sub(r'[^\w\-.]', '_', summary.original_filename.replace('.pdf', ''))
+    filename = f"resumen_{safe_name}.docx"
+
+    return StreamingResponse(
+        buffer,
+        media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 

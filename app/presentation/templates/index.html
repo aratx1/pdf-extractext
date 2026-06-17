@@ -70,10 +70,11 @@
                 </div>
             </div>
 
-            <button id="download-btn" class="mt-4 self-start p-2 rounded-lg hover:bg-white/20 transition-colors text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed" disabled aria-label="Download summary">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="download-btn" class="mt-4 self-start flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 hover:border-blue-400/60 transition-all duration-200 text-blue-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed text-sm font-medium" disabled aria-label="Download summary as DOCX">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
+                Exportar .docx
             </button>
         </main>
 
@@ -114,6 +115,7 @@
         const toggleIcon = document.getElementById('toggle-icon');
 
         let currentSummaryText = '';
+        let currentSummaryId = null;
 
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
@@ -148,6 +150,7 @@
 
                 const data = await response.json();
                 currentSummaryText = data.summary_text;
+                currentSummaryId = data.id;
                 resultContent.textContent = currentSummaryText;
                 resultTitle.textContent = data.original_filename;
                 resultPlaceholder.style.display = 'none';
@@ -174,17 +177,12 @@
             resultPlaceholder.style.display = 'flex';
             downloadBtn.disabled = true;
             currentSummaryText = '';
+            currentSummaryId = null;
         });
 
         downloadBtn.addEventListener('click', () => {
-            if (!currentSummaryText) return;
-            const blob = new Blob([currentSummaryText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'summary.txt';
-            a.click();
-            URL.revokeObjectURL(url);
+            if (!currentSummaryId) return;
+            window.location.href = `/api/summaries/${currentSummaryId}/export`;
         });
 
         function applyCollapseState(collapsed) {
@@ -214,11 +212,35 @@
 
                 if (data.summaries.length > 0) {
                     historyList.innerHTML = data.summaries.map(s => `
-                        <div class="flex items-center gap-3 p-3 rounded-full bg-white/10 border border-white/10 hover:border-white hover:shadow-white/10 transition-all duration-200 cursor-pointer group" onclick="showSummary('${s.id}')">
-                            <svg class="h-5 w-5 text-red-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
-                            </svg>
-                            <span class="text-sm text-white/80 group-hover:text-white truncate transition-colors">${s.original_filename}</span>
+                        <div id="history-item-${s.id}" class="flex flex-col gap-2 p-3 rounded-xl bg-white/10 border border-white/10 hover:border-white/30 transition-all duration-200 group">
+                            <div class="flex items-center gap-3 cursor-pointer" onclick="showSummary('${s.id}')">
+                                <svg class="h-5 w-5 text-red-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                                </svg>
+                                <span class="text-sm text-white/80 group-hover:text-white truncate transition-colors flex-1">${s.original_filename}</span>
+                            </div>
+                            <div class="flex items-center gap-2 pl-8">
+                                <button
+                                    onclick="exportSummary('${s.id}')"
+                                    title="Exportar como .docx"
+                                    class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500/30 hover:border-blue-400/60 text-blue-300 hover:text-white transition-all duration-200"
+                                >
+                                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                    Exportar
+                                </button>
+                                <button
+                                    onclick="deleteHistoryItem('${s.id}')"
+                                    title="Eliminar del historial"
+                                    class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md bg-red-500/20 hover:bg-red-500/40 border border-red-500/30 hover:border-red-400/60 text-red-300 hover:text-white transition-all duration-200"
+                                >
+                                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    Eliminar
+                                </button>
+                            </div>
                         </div>
                     `).join('');
                     historyContainer.style.display = 'block';
@@ -228,11 +250,32 @@
             }
         }
 
+        function exportSummary(id) {
+            window.location.href = `/api/summaries/${id}/export`;
+        }
+
+        function deleteHistoryItem(id) {
+            const item = document.getElementById(`history-item-${id}`);
+            if (!item) return;
+            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease, max-height 0.4s ease, margin 0.4s ease, padding 0.4s ease';
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(20px)';
+            item.style.overflow = 'hidden';
+            setTimeout(() => {
+                item.style.maxHeight = '0';
+                item.style.margin = '0';
+                item.style.padding = '0';
+                item.style.border = 'none';
+            }, 300);
+            setTimeout(() => item.remove(), 700);
+        }
+
         async function showSummary(id) {
             try {
                 const response = await fetch(`/api/summaries/${id}`);
                 const data = await response.json();
                 currentSummaryText = data.summary_text;
+                currentSummaryId = data.id;
                 resultTitle.textContent = data.original_filename;
                 resultContent.textContent = currentSummaryText;
                 resultPlaceholder.style.display = 'none';
