@@ -1,11 +1,27 @@
-"""Tests para verificar la conexión con OpenRouter API."""
+"""Tests de integración: verifican la conexión real con la API de OpenRouter.
 
-import os
+Hacen peticiones de verdad y consumen cuota, así que están marcados como
+`integration` y se saltan si no hay API key configurada. Para ejecutarlos:
+
+    pytest -m integration
+"""
+
 import sys
 import httpx
+import pytest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from app.core import get_settings  # noqa: E402
+
+pytestmark = [
+    pytest.mark.integration,
+    pytest.mark.skipif(
+        not get_settings().openrouter_api_key.strip(),
+        reason="requiere OPENROUTER_API_KEY en el .env",
+    ),
+]
 
 
 def test_api_key_configured():

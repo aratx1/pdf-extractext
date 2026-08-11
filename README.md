@@ -114,6 +114,43 @@ python -m uvicorn app.main:app --reload
 
 La aplicación estará disponible en `http://localhost:8000`.
 
+## Tests
+
+Instala las dependencias de desarrollo y ejecuta la suite:
+
+```bash
+uv sync --group dev
+uv run pytest
+```
+
+Los tests unitarios no necesitan red, ni MongoDB, ni API key: el proveedor de IA
+y el repositorio se sustituyen por dobles de prueba, y las peticiones HTTP usan
+un transporte simulado.
+
+| Archivo | Qué cubre |
+|---|---|
+| `tests/test_pdf_service.py` | Extracción de texto, recuento de páginas y caracteres, PDFs sin texto y archivos inválidos |
+| `tests/test_summary_service.py` | Orquestación PDF → IA → persistencia, incluido el truncado del texto |
+| `tests/test_in_memory_repository.py` | Guardado, búsqueda por id, orden por fecha y límite |
+| `tests/test_openrouter_client.py` | Construcción de la petición y manejo de errores del proveedor de IA |
+| `tests/test_api_routes.py` | Los endpoints HTTP: casos correctos, validaciones y códigos de error |
+
+### Tests de integración
+
+Los que dependen de servicios externos están marcados como `integration` y
+quedan **excluidos de la ejecución por defecto**. Para lanzarlos:
+
+```bash
+uv run pytest -m integration
+```
+
+| Archivo | Requisito |
+|---|---|
+| `tests/test_mongo_repository.py` | Un MongoDB en marcha (`docker compose up -d mongodb`). Usa la base `pdf_extractext_test`, que borra al empezar y al terminar |
+| `tests/test_openrouter_api.py` | `OPENROUTER_API_KEY` válida. Hace peticiones reales y consume cuota |
+
+Si el servicio que necesitan no está disponible, se saltan solos en vez de fallar.
+
 ## API
 
 Todos los endpoints cuelgan del prefijo `/api`. Con la aplicación levantada tienes
@@ -182,7 +219,7 @@ pdf-extractext/
 ├── static/                       # Archivos estáticos servidos en /static
 │   ├── css/                      # input.css y output.css (generado)
 │   └── media/                    # Imágenes e iconos
-├── tests/                        # Pruebas
+├── tests/                        # Pruebas (conftest.py + tests por módulo)
 ├── docs/                         # Documentación
 ├── uploads/                      # PDFs subidos (se crea al arrancar, no versionado)
 ├── docker-compose.yml            # Stack de Docker (app + MongoDB)
