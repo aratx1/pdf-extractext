@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/aratx1/pdf-extractext#readme",
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1"
