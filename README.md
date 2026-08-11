@@ -106,24 +106,35 @@ La aplicación estará disponible en `http://localhost:8000`.
 pdf-extractext/
 ├── app/                          # Código principal de la aplicación
 │   ├── application/              # Lógica de negocio
-│   ├── core/                     # Configuración y utilidades
-│   ├── infrastructure/           # Integración externa (OpenRouter, MongoDB)
-│   ├── presentation/             # Controladores y templates
+│   │   ├── interfaces/           # Contratos (AIProvider, SummaryRepository)
+│   │   └── services/             # pdf_service.py, summary_service.py
+│   ├── core/                     # Settings: configuración leída del .env
+│   ├── infrastructure/           # Integración externa
+│   │   ├── external/             # openrouter_client.py
+│   │   ├── file_storage/         # file_handler.py
+│   │   └── repositories/         # mongo_repository.py, in_memory_repository.py
+│   ├── presentation/             # Capa HTTP
+│   │   ├── routers/              # pdf_summary.py (endpoints bajo /api)
+│   │   ├── schemas/              # Modelos Pydantic de entrada/salida
+│   │   └── templates/            # index.html
 │   └── main.py                   # Entrada de FastAPI
-├── static/                       # Archivos estáticos
-│   └── css/                      # Estilos generados
-├── docker/                       # Recursos para imágenes Docker
-├── mongo/                        # Recursos auxiliares de MongoDB
+├── static/                       # Archivos estáticos servidos en /static
+│   ├── css/                      # input.css y output.css (generado)
+│   └── media/                    # Imágenes e iconos
 ├── tests/                        # Pruebas
-├── uploads/                      # PDFs subidos por el usuario
 ├── docs/                         # Documentación
+├── uploads/                      # PDFs subidos (se crea al arrancar, no versionado)
 ├── docker-compose.yml            # Stack de Docker (app + MongoDB)
 ├── Dockerfile                    # Imagen de la aplicación
-├── .env                          # Variables de entorno (no se comitea)
+├── .env.example                  # Plantilla de variables de entorno
+├── .env                          # Variables de entorno reales (no se comitea)
 ├── tailwind.config.js            # Configuración de Tailwind CSS
 ├── postcss.config.js             # Configuración de PostCSS
 ├── package.json                  # Dependencias Node.js
-└── pyproject.toml                # Dependencias Python
+├── pyproject.toml                # Dependencias Python
+├── uv.lock                       # Versiones bloqueadas por UV
+├── main.py                       # Script inicial de `uv init` (sin uso)
+└── LICENSE
 ```
 
 ## Notas
