@@ -27,7 +27,20 @@ Extraer texto de un pdf que es proporcionado por el usuario. Después se hace un
 
 ### Configuración del entorno
 
-Antes de levantar la aplicación, edita el archivo `.env` en la raíz del proyecto y configura tu API key de OpenRouter:
+El repositorio no incluye el `.env` (está en `.gitignore`). Antes de levantar la
+aplicación, crea el tuyo copiando la plantilla:
+
+```bash
+cp .env.example .env
+```
+
+En Windows (PowerShell):
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Después edita `.env` y configura como mínimo tu API key de OpenRouter:
 
 ```
 OPENROUTER_API_KEY=sk-or-v1-...
@@ -36,6 +49,7 @@ OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct:free
 
 - Genera tu API key gratis en [openrouter.ai/keys](https://openrouter.ai/keys) (solo email, sin tarjeta).
 - `OPENROUTER_MODEL` debe ser un identificador válido de OpenRouter. Los modelos con sufijo `:free` no tienen costo (sí tienen rate limits).
+- El resto de variables (`MONGODB_URL`, `UPLOAD_DIR`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
 
 Sin la API key configurada, la app responderá con un mensaje claro pidiéndola al subir el primer PDF.
 
