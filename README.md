@@ -237,9 +237,13 @@ pdf-extractext/
 
 ## Notas
 
-- Los archivos CSS compilados se generan en `static/css/output.css`
-- Asegúrate de incluir el archivo CSS compilado en tus templates HTML
-- El archivo `tailwind.config.js` está configurado para buscar clases de Tailwind en `app/presentation/templates/`
+- Tailwind compila `static/css/input.css` en `static/css/output.css`, que
+  `index.html` ya enlaza como `/static/css/output.css`.
+- `tailwind.config.js` busca las clases de Tailwind en
+  `app/presentation/templates/`, así que si añades plantillas fuera de esa
+  carpeta tendrás que incluirlas en `content` o sus estilos no se generarán.
+- Tras cambiar clases en las plantillas hay que recompilar con
+  `npm run build:css` (o dejar `npm run watch:css` corriendo en desarrollo).
 
 ## Diseño & UI
 
