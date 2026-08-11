@@ -44,11 +44,11 @@ Después edita `.env` y configura como mínimo tu API key de OpenRouter:
 
 ```
 OPENROUTER_API_KEY=sk-or-v1-...
-OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=openrouter/free
 ```
 
 - Genera tu API key gratis en [openrouter.ai/keys](https://openrouter.ai/keys) (solo email, sin tarjeta).
-- `OPENROUTER_MODEL` debe ser un identificador válido de OpenRouter. Los modelos con sufijo `:free` no tienen costo (sí tienen rate limits).
+- `OPENROUTER_MODEL` debe ser un identificador válido del [catálogo de OpenRouter](https://openrouter.ai/models). El valor por defecto, `openrouter/free`, es un router que elige automáticamente un modelo gratuito; los ids con sufijo `:free` tampoco tienen costo (sí tienen rate limits).
 - El resto de variables (`MONGODB_URL`, `UPLOAD_DIR`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
 
 Sin la API key configurada, la app responderá con un mensaje claro pidiéndola al subir el primer PDF.
