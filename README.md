@@ -100,6 +100,53 @@ python -m uvicorn app.main:app --reload
 
 La aplicación estará disponible en `http://localhost:8000`.
 
+## API
+
+Todos los endpoints cuelgan del prefijo `/api`. Con la aplicación levantada tienes
+documentación interactiva generada por FastAPI en `http://localhost:8000/docs`.
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/api/summarize` | Sube un PDF (multipart, campo `file`) y devuelve el resumen generado |
+| `GET` | `/api/summaries` | Lista los resúmenes guardados. Acepta `?limit=` (por defecto 100) |
+| `GET` | `/api/summaries/{id}` | Devuelve un resumen concreto por su UUID |
+| `GET` | `/api/summaries/{id}/export` | Descarga el resumen como archivo `.docx` |
+| `GET` | `/api/health` | Estado del servicio y disponibilidad del proveedor de IA |
+
+Además, `GET /` sirve la interfaz web y `/static` expone los archivos estáticos.
+
+### Ejemplo
+
+```bash
+curl -X POST http://localhost:8000/api/summarize \
+  -F "file=@documento.pdf"
+```
+
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "original_filename": "documento.pdf",
+  "summary_text": "El documento describe...",
+  "created_at": "2026-01-15T10:30:00"
+}
+```
+
+### Códigos de error
+
+| Código | Cuándo |
+|---|---|
+| `400` | El archivo no es `.pdf` o está vacío |
+| `404` | No existe un resumen con ese UUID |
+| `502` | Falta la API key de OpenRouter o el proveedor rechazó la petición |
+| `503` | No se pudo contactar con el proveedor de IA |
+| `504` | El modelo tardó demasiado en responder |
+
+### Límites
+
+- Solo se envían al modelo los primeros 12.000 caracteres del PDF
+  (`MAX_PROMPT_CHARS` en `app/application/services/summary_service.py`).
+- El resumen se pide con un máximo de 500 palabras.
+
 ## Estructura del Proyecto
 
 ```
