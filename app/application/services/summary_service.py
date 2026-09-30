@@ -8,6 +8,10 @@ from app.application.services.pdf_service import PDFService, ExtractedPDF
 MAX_PROMPT_CHARS = 12000
 
 
+class NoExtractableTextError(Exception):
+    pass
+
+
 class SummaryService:
     def __init__(
         self,
@@ -21,6 +25,10 @@ class SummaryService:
 
     async def create_summary(self, file_content: bytes, filename: str) -> Summary:
         extracted = self._pdf_service.extract_text(file_content, filename)
+        
+        if len(extracted.text.strip()) < 10:
+            raise NoExtractableTextError("El PDF no contiene texto extraíble suficiente.")
+            
         text_for_ai = extracted.text[:MAX_PROMPT_CHARS]
         ai_response = await self._ai_provider.generate_summary(text_for_ai)
 

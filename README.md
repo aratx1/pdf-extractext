@@ -188,6 +188,7 @@ curl -X POST http://localhost:8000/api/summarize \
 |---|---|
 | `400` | El archivo no es `.pdf` o está vacío |
 | `404` | No existe un resumen con ese UUID |
+| `422` | El PDF no contiene texto extraíble (probablemente escaneado o imagen) |
 | `502` | Falta la API key de OpenRouter o el proveedor rechazó la petición |
 | `503` | No se pudo contactar con el proveedor de IA |
 | `504` | El modelo tardó demasiado en responder |
