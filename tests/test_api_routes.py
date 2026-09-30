@@ -3,6 +3,7 @@
 El servicio se sustituye por uno con dobles de prueba, así que no hay red ni BD.
 """
 
+from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
@@ -78,6 +79,23 @@ def test_summarize_rechaza_un_archivo_vacio(client):
 
 def test_summarize_sin_archivo_devuelve_422(client):
     assert client.post("/api/summarize").status_code == 422
+
+
+def test_summarize_rechaza_archivos_mas_grandes_que_el_limite(client, pdf_bytes):
+    with patch("app.core.get_settings") as mock_settings:
+        mock_settings.return_value.max_file_size_mb = 0
+        response = subir_pdf(client, pdf_bytes)
+
+    assert response.status_code == 413
+    assert "0MB" in response.json()["detail"]
+
+
+def test_summarize_acepta_archivos_mas_pequenos_que_el_limite(client, pdf_bytes):
+    with patch("app.core.get_settings") as mock_settings:
+        mock_settings.return_value.max_file_size_mb = 10
+        response = subir_pdf(client, pdf_bytes)
+
+    assert response.status_code == 200
 
 
 # --- GET /api/summaries ---

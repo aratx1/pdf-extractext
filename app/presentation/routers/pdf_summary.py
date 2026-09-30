@@ -37,6 +37,15 @@ async def summarize_pdf(
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Adjuntaste un archivo vacio.")
 
+    from app.core import get_settings
+    settings = get_settings()
+    max_size_bytes = settings.max_file_size_mb * 1024 * 1024
+    if len(content) > max_size_bytes:
+        raise HTTPException(
+            status_code=413,
+            detail=f"El archivo es demasiado grande. El límite es de {settings.max_file_size_mb}MB."
+        )
+
     try:
         summary = await service.create_summary(content, file.filename)
     except MissingAPIKeyError:
