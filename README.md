@@ -49,7 +49,7 @@ OPENROUTER_MODEL=openrouter/free
 
 - Genera tu API key gratis en [openrouter.ai/keys](https://openrouter.ai/keys) (solo email, sin tarjeta).
 - `OPENROUTER_MODEL` debe ser un identificador válido del [catálogo de OpenRouter](https://openrouter.ai/models). El valor por defecto, `openrouter/free`, es un router que elige automáticamente un modelo gratuito; los ids con sufijo `:free` tampoco tienen costo (sí tienen rate limits).
-- El resto de variables (`MONGODB_URL`, `UPLOAD_DIR`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
+- El resto de variables (`MONGODB_URL`, `MONGODB_DB_NAME`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
 
 Sin la API key configurada, la app responderá con un mensaje claro pidiéndola al subir el primer PDF.
 
@@ -209,7 +209,6 @@ pdf-extractext/
 │   ├── core/                     # Settings: configuración leída del .env
 │   ├── infrastructure/           # Integración externa
 │   │   ├── external/             # openrouter_client.py
-│   │   ├── file_storage/         # file_handler.py
 │   │   └── repositories/         # mongo_repository.py, in_memory_repository.py
 │   ├── presentation/             # Capa HTTP
 │   │   ├── routers/              # pdf_summary.py (endpoints bajo /api)
@@ -221,7 +220,6 @@ pdf-extractext/
 │   └── media/                    # Imágenes e iconos
 ├── tests/                        # Pruebas (conftest.py + tests por módulo)
 ├── docs/                         # Documentación
-├── uploads/                      # PDFs subidos (se crea al arrancar, no versionado)
 ├── docker-compose.yml            # Stack de Docker (app + MongoDB)
 ├── Dockerfile                    # Imagen de la aplicación
 ├── .env.example                  # Plantilla de variables de entorno
@@ -231,7 +229,6 @@ pdf-extractext/
 ├── package.json                  # Dependencias Node.js
 ├── pyproject.toml                # Dependencias Python
 ├── uv.lock                       # Versiones bloqueadas por UV
-├── main.py                       # Script inicial de `uv init` (sin uso)
 └── LICENSE
 ```
 

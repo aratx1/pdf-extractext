@@ -36,7 +36,6 @@ def create_summary_service() -> SummaryService:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_summary_service()
-    get_settings().upload_dir.mkdir(parents=True, exist_ok=True)
     yield
 
 
