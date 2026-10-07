@@ -49,7 +49,7 @@ OPENROUTER_MODEL=openrouter/free
 
 - Genera tu API key gratis en [openrouter.ai/keys](https://openrouter.ai/keys) (solo email, sin tarjeta).
 - `OPENROUTER_MODEL` debe ser un identificador válido del [catálogo de OpenRouter](https://openrouter.ai/models). El valor por defecto, `openrouter/free`, es un router que elige automáticamente un modelo gratuito; los ids con sufijo `:free` tampoco tienen costo (sí tienen rate limits).
-- El resto de variables (`MONGODB_URL`, `UPLOAD_DIR`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
+- El resto de variables (`MONGODB_URL`, `MONGODB_DB_NAME`, etc.) están descritas en `.env.example` y tienen valores por defecto válidos para desarrollo local.
 
 Sin la API key configurada, la app responderá con un mensaje claro pidiéndola al subir el primer PDF.
 
@@ -134,6 +134,7 @@ un transporte simulado.
 | `tests/test_in_memory_repository.py` | Guardado, búsqueda por id, orden por fecha y límite |
 | `tests/test_openrouter_client.py` | Construcción de la petición y manejo de errores del proveedor de IA |
 | `tests/test_api_routes.py` | Los endpoints HTTP: casos correctos, validaciones y códigos de error |
+| `tests/test_settings.py` | Que un `.env` con variables desconocidas no impida arrancar |
 
 ### Tests de integración
 
@@ -209,7 +210,6 @@ pdf-extractext/
 │   ├── core/                     # Settings: configuración leída del .env
 │   ├── infrastructure/           # Integración externa
 │   │   ├── external/             # openrouter_client.py
-│   │   ├── file_storage/         # file_handler.py
 │   │   └── repositories/         # mongo_repository.py, in_memory_repository.py
 │   ├── presentation/             # Capa HTTP
 │   │   ├── routers/              # pdf_summary.py (endpoints bajo /api)
@@ -221,7 +221,6 @@ pdf-extractext/
 │   └── media/                    # Imágenes e iconos
 ├── tests/                        # Pruebas (conftest.py + tests por módulo)
 ├── docs/                         # Documentación
-├── uploads/                      # PDFs subidos (se crea al arrancar, no versionado)
 ├── docker-compose.yml            # Stack de Docker (app + MongoDB)
 ├── Dockerfile                    # Imagen de la aplicación
 ├── .env.example                  # Plantilla de variables de entorno
@@ -231,7 +230,6 @@ pdf-extractext/
 ├── package.json                  # Dependencias Node.js
 ├── pyproject.toml                # Dependencias Python
 ├── uv.lock                       # Versiones bloqueadas por UV
-├── main.py                       # Script inicial de `uv init` (sin uso)
 └── LICENSE
 ```
 
@@ -253,12 +251,28 @@ La aplicación utiliza **Tailwind CSS** para un diseño minimalista refinado con
 - **Accesible**: WCAG 2.1 AA (contraste 4.5:1+, navegación por teclado)
 - **Animaciones**: Transiciones suaves de 150-300ms
 
-Para más información, consulta la [documentación de componentes](docs/COMPONENT_REFERENCE.md).
+### Componentes de la interfaz
+
+Todo vive en `app/presentation/templates/index.html`.
+
+| Componente | Comportamiento |
+|---|---|
+| Cabecera | Fija arriba, texto con degradado y fondo difuminado |
+| Zona de subida | Arrastrar y soltar o clic; estados normal, hover, archivo seleccionado y deshabilitado |
+| Tarjeta de resultado | Aparece con fade-in y deslizamiento (300 ms) y renderiza el Markdown del resumen |
+| Alerta de error | Borde izquierdo rojo con icono; desaparece al generar un nuevo resumen |
+| Historial | Lista clicable con nombre de archivo y fecha |
+| Pie | Fijo abajo, respeta el modo oscuro |
+
+Antes de desplegar cambios de interfaz: recompilar con `npm run build:css`, revisar
+móvil (375 px), tablet (768 px) y escritorio (1024 px+), probar el modo oscuro, el
+contraste (≥ 4.5:1), la navegación con teclado y que no haya errores en consola.
 
 ## 📚 Documentación
 
-- [`docs/estructura.md`](docs/estructura.md) - Navegación y estructura del funcionamiento
-- [`docs/nueva_API.md`](docs/nueva_API.md) - Detalle de la API
-- [`docs/workflow.md`](docs/workflow.md) - Flujo de trabajo del proyecto
-- [`docs/COMPONENT_REFERENCE.md`](docs/COMPONENT_REFERENCE.md) - Referencia de componentes UI
+- [`docs/estructura.md`](docs/estructura.md) - Arquitectura por capas y flujo de una petición
+- [`docs/workflow.md`](docs/workflow.md) - Flujo de trabajo del proyecto (ramas y pull requests)
+
+La referencia de la API está en este mismo README y, con la aplicación levantada,
+en `http://localhost:8000/docs`.
 
