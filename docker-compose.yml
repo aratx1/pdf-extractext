@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB_NAME=pdf_extractext
+    depends_on:
+      mongodb:
+        condition: service_started
+    networks:
+      - red_pdfextract
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - red_pdfextract
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+
+networks:
+  red_pdfextract:
+    external: true
