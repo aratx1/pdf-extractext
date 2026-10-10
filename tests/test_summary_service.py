@@ -92,10 +92,10 @@ async def test_list_summaries_respeta_el_limite(service, pdf_bytes):
 
 async def test_no_llama_a_la_ia_ni_guarda_si_pdf_no_tiene_texto(service, fake_ai_provider, fake_repository):
     pdf = build_pdf([""])
-    
+
     with pytest.raises(NoExtractableTextError):
         await service.create_summary(pdf, "vacio.pdf")
-        
+
     assert fake_ai_provider.calls == 0
     assert len(fake_repository.saved) == 0
 
