@@ -189,6 +189,7 @@ curl -X POST http://localhost:8000/api/summarize \
 |---|---|
 | `400` | El archivo no es `.pdf` o está vacío |
 | `404` | No existe un resumen con ese UUID |
+| `413` | El archivo supera el tamaño máximo configurado |
 | `422` | El PDF no contiene texto extraíble (probablemente escaneado o imagen) |
 | `502` | Falta la API key de OpenRouter o el proveedor rechazó la petición |
 | `503` | No se pudo contactar con el proveedor de IA |
@@ -196,6 +197,7 @@ curl -X POST http://localhost:8000/api/summarize \
 
 ### Límites
 
+- El tamaño máximo del PDF está limitado por `MAX_FILE_SIZE_MB` (por defecto 10MB).
 - Solo se envían al modelo los primeros 12.000 caracteres del PDF
   (`MAX_PROMPT_CHARS` en `app/application/services/summary_service.py`).
 - El resumen se pide con un máximo de 500 palabras.

@@ -9,6 +9,7 @@ from docx.shared import Pt, RGBColor
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from app.application.services.summary_service import SummaryService, NoExtractableTextError
+from app.core import get_settings
 from app.infrastructure.external.openrouter_client import MissingAPIKeyError, OpenRouterError
 from app.presentation.schemas.pdf_summary import (
     SummaryResponse,
@@ -36,6 +37,14 @@ async def summarize_pdf(
     content = await file.read()
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Adjuntaste un archivo vacio.")
+
+    settings = get_settings()
+    max_size_bytes = settings.max_file_size_mb * 1024 * 1024
+    if len(content) > max_size_bytes:
+        raise HTTPException(
+            status_code=413,
+            detail=f"El archivo es demasiado grande. El límite es de {settings.max_file_size_mb}MB."
+        )
 
     try:
         summary = await service.create_summary(content, file.filename)
