@@ -8,7 +8,7 @@ from docx import Document
 from docx.shared import Pt, RGBColor
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
-from app.application.services.summary_service import SummaryService
+from app.application.services.summary_service import SummaryService, NoExtractableTextError
 from app.infrastructure.external.openrouter_client import MissingAPIKeyError, OpenRouterError
 from app.presentation.schemas.pdf_summary import (
     SummaryResponse,
@@ -39,6 +39,11 @@ async def summarize_pdf(
 
     try:
         summary = await service.create_summary(content, file.filename)
+    except NoExtractableTextError:
+        raise HTTPException(
+            status_code=422,
+            detail="El PDF no contiene texto extraíble. Es probable que sea un documento escaneado o una imagen."
+        )
     except MissingAPIKeyError:
         raise HTTPException(
             status_code=502,

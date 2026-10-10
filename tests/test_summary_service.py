@@ -8,7 +8,7 @@ from uuid import uuid4
 import pytest
 
 from app.application.services.pdf_service import PDFService
-from app.application.services.summary_service import MAX_PROMPT_CHARS, SummaryService
+from app.application.services.summary_service import MAX_PROMPT_CHARS, SummaryService, NoExtractableTextError
 from tests.conftest import build_pdf
 
 
@@ -88,3 +88,28 @@ async def test_list_summaries_respeta_el_limite(service, pdf_bytes):
     await service.create_summary(pdf_bytes, "dos.pdf")
 
     assert len(await service.list_summaries(limit=1)) == 1
+
+
+async def test_no_llama_a_la_ia_ni_guarda_si_pdf_no_tiene_texto(service, fake_ai_provider, fake_repository):
+    pdf = build_pdf([""])
+
+    with pytest.raises(NoExtractableTextError):
+        await service.create_summary(pdf, "vacio.pdf")
+
+    assert fake_ai_provider.calls == 0
+    assert len(fake_repository.saved) == 0
+
+
+@pytest.mark.parametrize("texto, debe_resumir", [("a" * 9, False), ("a" * 10, True)])
+async def test_el_minimo_de_texto_para_resumir_son_10_caracteres(
+    service, fake_ai_provider, texto, debe_resumir
+):
+    pdf = build_pdf([texto])
+
+    if debe_resumir:
+        await service.create_summary(pdf, "limite.pdf")
+        assert fake_ai_provider.calls == 1
+    else:
+        with pytest.raises(NoExtractableTextError):
+            await service.create_summary(pdf, "limite.pdf")
+        assert fake_ai_provider.calls == 0
