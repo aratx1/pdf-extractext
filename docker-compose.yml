@@ -5,8 +5,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    volumes:
-      - uploads_data:/app/uploads
     env_file:
       - .env
     environment:
@@ -31,7 +29,6 @@ services:
 
 volumes:
   mongo_data:
-  uploads_data:
 
 networks:
   red_pdfextract:

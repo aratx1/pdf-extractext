@@ -98,6 +98,17 @@ def test_summarize_acepta_archivos_mas_pequenos_que_el_limite(client, pdf_bytes)
     assert response.status_code == 200
 
 
+def test_summarize_devuelve_422_si_el_pdf_no_tiene_texto(client, fake_ai_provider, fake_repository):
+    from tests.conftest import build_pdf
+
+    response = subir_pdf(client, build_pdf([""]), filename="escaneado.pdf")
+
+    assert response.status_code == 422
+    assert "escaneado" in response.json()["detail"]
+    assert fake_ai_provider.calls == 0
+    assert fake_repository.saved == []
+
+
 # --- GET /api/summaries ---
 
 

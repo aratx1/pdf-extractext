@@ -1,13 +1,11 @@
 """Core configuration module."""
 
-from pathlib import Path
 from functools import lru_cache
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     app_name: str = "PDF Summarizer"
-    upload_dir: Path = Path("uploads")
     max_file_size_mb: int = 10
 
     mongodb_url: str = "mongodb://localhost:27017"
