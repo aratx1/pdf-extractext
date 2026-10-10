@@ -8,7 +8,9 @@ Creamos ramas donde cada uno trabaja a partir de develop y juntamos nuestras ram
 1. Crea una rama a partir de develop según la nomenclatura
 2. Haz tus commits a esa rama segun la nomenclatura
 3. Cuando termines, haz un pull request a DEVELOP.
-4. La dueña del repositorio va a hacer una review a tu código y probará tu rama
+4. La dueña del repositorio (@aratx1) va a hacer una review a tu código y probará tu rama.
+   Solo ella puede aprobar: en los siete repositorios, `main` y `develop` exigen su
+   aprobación (archivo `.github/CODEOWNERS`) y la CI en verde, y no admiten push directo
 5. Cuando tus cambios están bien, tu rama hará merge con develop y tus cambios se verán en develop
 6. Continua con otro issue de la misma manera
 
