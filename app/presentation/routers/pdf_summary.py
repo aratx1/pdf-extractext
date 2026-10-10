@@ -9,6 +9,7 @@ from docx.shared import Pt, RGBColor
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from fastapi.responses import StreamingResponse
 from app.application.services.summary_service import SummaryService, NoExtractableTextError
+from app.core import get_settings
 from app.infrastructure.external.openrouter_client import MissingAPIKeyError, OpenRouterError
 from app.presentation.schemas.pdf_summary import (
     SummaryResponse,
@@ -37,7 +38,6 @@ async def summarize_pdf(
     if len(content) == 0:
         raise HTTPException(status_code=400, detail="Adjuntaste un archivo vacio.")
 
-    from app.core import get_settings
     settings = get_settings()
     max_size_bytes = settings.max_file_size_mb * 1024 * 1024
     if len(content) > max_size_bytes:
