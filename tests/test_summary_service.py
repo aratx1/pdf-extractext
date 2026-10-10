@@ -98,3 +98,18 @@ async def test_no_llama_a_la_ia_ni_guarda_si_pdf_no_tiene_texto(service, fake_ai
         
     assert fake_ai_provider.calls == 0
     assert len(fake_repository.saved) == 0
+
+
+@pytest.mark.parametrize("texto, debe_resumir", [("a" * 9, False), ("a" * 10, True)])
+async def test_el_minimo_de_texto_para_resumir_son_10_caracteres(
+    service, fake_ai_provider, texto, debe_resumir
+):
+    pdf = build_pdf([texto])
+
+    if debe_resumir:
+        await service.create_summary(pdf, "limite.pdf")
+        assert fake_ai_provider.calls == 1
+    else:
+        with pytest.raises(NoExtractableTextError):
+            await service.create_summary(pdf, "limite.pdf")
+        assert fake_ai_provider.calls == 0
